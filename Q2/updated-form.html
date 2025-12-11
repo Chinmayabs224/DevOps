@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Registration Form</title>
+    <title>Event Registration Form - Updated</title>
     <style>
         * {
             margin: 0;
@@ -239,6 +239,12 @@
             </div>
 
             <div class="form-group">
+                <label for="department">Department</label>
+                <input type="text" id="department" placeholder="Engineering, Sales, etc." required>
+                <div class="message" id="deptMsg"></div>
+            </div>
+
+            <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" placeholder="john@example.com" required>
                 <div class="message" id="emailMsg"></div>
@@ -288,8 +294,8 @@
                 const item = document.createElement('div');
                 item.className = 'reg-item';
                 item.innerHTML = `
-                    <span>${reg.name} - ${reg.email}</span>
-                    <small>${reg.phone}</small>
+                    <span>${reg.name} (${reg.department})</span>
+                    <small>${reg.email}</small>
                 `;
                 regItems.appendChild(item);
             });
@@ -300,12 +306,14 @@
 
         // Elements
         const nameInput = document.getElementById('name');
+        const departmentInput = document.getElementById('department');
         const email = document.getElementById('email');
         const phone = document.getElementById('phone');
         const terms = document.getElementById('terms');
 
         // Messages
         const nameMsg = document.getElementById('nameMsg');
+        const deptMsg = document.getElementById('deptMsg');
         const emailMsg = document.getElementById('emailMsg');
         const phoneMsg = document.getElementById('phoneMsg');
 
@@ -316,6 +324,14 @@
             nameMsg.textContent = msg;
             nameMsg.className = 'message ' + (nameRegex.test(val) ? 'success-message' : 'error-message');
             return nameRegex.test(val);
+        }
+
+        function validateDepartment(val) {
+            const valid = val.trim().length >= 2;
+            const msg = valid ? 'Department looks good!' : 'Enter valid department';
+            deptMsg.textContent = msg;
+            deptMsg.className = 'message ' + (valid ? 'success-message' : 'error-message');
+            return valid;
         }
 
         function validateEmail(val) {
@@ -341,6 +357,12 @@
             checkValidity();
         });
 
+        departmentInput.addEventListener('input', () => {
+            const valid = validateDepartment(departmentInput.value);
+            departmentInput.className = valid ? 'success' : 'error';
+            checkValidity();
+        });
+
         email.addEventListener('input', () => {
             const valid = validateEmail(email.value);
             email.className = valid ? 'success' : 'error';
@@ -357,6 +379,7 @@
 
         function checkValidity() {
             const valid = validateName(nameInput.value) &&
+                validateDepartment(departmentInput.value) &&
                 validateEmail(email.value) &&
                 validatePhone(phone.value) &&
                 terms.checked;
@@ -368,6 +391,7 @@
             e.preventDefault();
             const newReg = {
                 name: nameInput.value,
+                department: departmentInput.value,
                 email: email.value,
                 phone: phone.value,
                 timestamp: new Date().toLocaleString()
