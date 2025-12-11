@@ -6,7 +6,7 @@ This guide outlines the steps to deploy a Docker image on Kubernetes using a Dep
 
 The deployment configuration is stored in the file below. Open it to modify the image name or other settings if necessary.
 
-**File Location:** [deployment.yaml](Q6/deployment.yaml)
+**File Location:** [deployment.yaml](d:/CLi/Devops/Q6/deployment.yaml)
 
 > **Note:** 
 > - If you are using a local image with Minikube, make sure to load it into the cluster: `minikube image load student-portal:v1`.
